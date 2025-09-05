@@ -56,7 +56,7 @@ const songs = [
 
 let currentSongIndex = 3;
 let isRepeating = false;
-let isDoubleSpeed = false;
+let playbackSpeed = 1.0;
 
 function updateSongInfo() {
   songName.textContent = songs[currentSongIndex].title;
@@ -135,9 +135,27 @@ repeatButton.addEventListener("click", () => {
 });
 
 speedButton.addEventListener("click", () => {
-  isDoubleSpeed = !isDoubleSpeed;
-  speedButton.classList.toggle("active");
-  song.playbackRate = isDoubleSpeed ? 2.0 : 1.0;
+  // Chuyển đổi tốc độ: 1.0 → 1.5 → 2.0 → 1.0 ...
+  if (playbackSpeed === 1.0) {
+    playbackSpeed = 1.5;
+  } else if (playbackSpeed === 1.5) {
+    playbackSpeed = 2.0;
+  } else {
+    playbackSpeed = 1.0;
+  }
+
+  song.playbackRate = playbackSpeed;
+
+  // Cập nhật trạng thái nút và tooltip
+  if (playbackSpeed !== 1.0) {
+    speedButton.classList.add("active");
+  } else {
+    speedButton.classList.remove("active");
+  }
+
+  speedButton.title = `Speed: ${playbackSpeed}x`;
+  // (tuỳ chọn) Cập nhật hiển thị biểu tượng kèm tốc độ:
+  // speedButton.innerHTML = `<i class="fa-solid fa-gauge-high"></i> ${playbackSpeed}x`;
 });
 
 updateSongInfo();
