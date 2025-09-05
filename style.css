@@ -179,3 +179,36 @@ body {
 .controls button:nth-child(2):is(:hover, :focus-visible) {
   transform: scale(1.25);
 }
+/* Highlight active state for Repeat and Speed buttons */
+.controls button.active {
+  background: rgba(255, 255, 255, 0.7);
+  color: black;
+  border: 2px solid black;
+  transform: scale(1.1);
+}
+
+/* Optional: Giúp tooltip rõ hơn khi hover */
+.controls button[title] {
+  position: relative;
+}
+
+.controls button[title]::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -28px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.controls button[title]:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}

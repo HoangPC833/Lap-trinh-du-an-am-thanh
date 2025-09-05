@@ -1,10 +1,11 @@
-
 const progress = document.getElementById("progress");
 const song = document.getElementById("song");
 const controlIcon = document.getElementById("controlIcon");
 const playPauseButton = document.querySelector(".play-pause-btn");
 const nextButton = document.querySelector(".controls button.forward");
 const prevButton = document.querySelector(".controls button.backward");
+const repeatButton = document.querySelector(".repeat-btn");
+const speedButton = document.querySelector(".speed-btn");
 const songName = document.querySelector(".music-player h1");
 const artistName = document.querySelector(".music-player p");
 
@@ -39,7 +40,6 @@ const songs = [
     source:
       "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Harry-Styles-As-It-Was.mp3",
   },
-
   {
     title: "Physical",
     name: "Dua Lipa",
@@ -55,6 +55,8 @@ const songs = [
 ];
 
 let currentSongIndex = 3;
+let isRepeating = false;
+let isDoubleSpeed = false;
 
 function updateSongInfo() {
   songName.textContent = songs[currentSongIndex].title;
@@ -76,10 +78,12 @@ song.addEventListener("loadedmetadata", () => {
 });
 
 song.addEventListener("ended", () => {
-  currentSongIndex = (swiper.activeIndex + 1) % songs.length;
-  updateSongInfo();
-  swiper.slideTo(currentSongIndex); 
-  playSong(); 
+  if (!isRepeating) {
+    currentSongIndex = (swiper.activeIndex + 1) % songs.length;
+    updateSongInfo();
+    swiper.slideTo(currentSongIndex);
+  }
+  playSong();
 });
 
 function pauseSong() {
@@ -124,6 +128,18 @@ prevButton.addEventListener("click", () => {
   playPause();
 });
 
+repeatButton.addEventListener("click", () => {
+  isRepeating = !isRepeating;
+  repeatButton.classList.toggle("active");
+  song.loop = isRepeating;
+});
+
+speedButton.addEventListener("click", () => {
+  isDoubleSpeed = !isDoubleSpeed;
+  speedButton.classList.toggle("active");
+  song.playbackRate = isDoubleSpeed ? 2.0 : 1.0;
+});
+
 updateSongInfo();
 
 var swiper = new Swiper(".swiper", {
@@ -148,6 +164,6 @@ var swiper = new Swiper(".swiper", {
 
 swiper.on("slideChange", () => {
   currentSongIndex = swiper.activeIndex;
-  updateSongInfo(); 
-  playPause(); 
+  updateSongInfo();
+  playPause();
 });
